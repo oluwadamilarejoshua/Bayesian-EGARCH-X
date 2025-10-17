@@ -2,4 +2,6 @@
 *.csv
 *.png
 *.Rproj.user
+*.RData
+*.rds
 Deliverables/
