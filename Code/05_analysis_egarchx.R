@@ -5,15 +5,17 @@
 #    Volatility of the Nigerian Naira"
 #
 # Model  : egarch_x_model.stan
-# Data   : ../Data/nigeria_monthly_stan_input_post1999.csv
+# Data   : ../Data/processed/nigeria_monthly_stan_input_post1999.csv
 #          (Mar 1999 – Dec 2020, 262 obs, post-1999 managed-float era)
+#          produced by 01_data_fetch_monthly.R + 02_make_post1999.R
 #          y    = log return of official NGN/USD exchange rate
 #          gdp  = first-differenced interpolated monthly GDP growth
 #          debt = first-differenced interpolated monthly debt service
 #
-# Key difference from original Analysis script.R:
-#   GDP and debt service enter the VARIANCE equation (EGARCH-X),
-#   not the mean equation. The mean is a simple AR(1) in log returns.
+# This is step 05 of the pipeline — run after 01-04 (data fetch,
+# post-1999 restriction, stationarity tests, structural break tests).
+# GDP and debt service enter the VARIANCE equation (EGARCH-X),
+# not the mean equation.
 # ============================================================
 
 # ---- Rtools PATH guard (Windows) ---------------------------
@@ -46,20 +48,20 @@ options(mc.cores = 1)  # run chains sequentially on Windows to avoid socket over
 # ---- Load data ---------------------------------------------
 data_path <- tryCatch({
   d <- dirname(rstudioapi::getSourceEditorContext()$path)
-  file.path(d, "../Data/nigeria_monthly_stan_input_post1999.csv")
+  file.path(d, "../Data/processed/nigeria_monthly_stan_input_post1999.csv")
 }, error = function(e) {
   args <- commandArgs(trailingOnly = FALSE)
   flag <- grep("--file=", args, value = TRUE)
   if (length(flag) > 0)
     file.path(dirname(normalizePath(sub("--file=", "", flag[1]))),
-              "../Data/nigeria_monthly_stan_input_post1999.csv")
+              "../Data/processed/nigeria_monthly_stan_input_post1999.csv")
   else
-    file.path(getwd(), "../Data/nigeria_monthly_stan_input_post1999.csv")
+    file.path(getwd(), "../Data/processed/nigeria_monthly_stan_input_post1999.csv")
 })
 
 if (!file.exists(data_path))
   stop("Data file not found: ", data_path,
-       "\nRun Analysis/Data/make_post1999.R first.")
+       "\nRun 01_data_fetch_monthly.R and 02_make_post1999.R first.")
 
 df <- read.csv(data_path, stringsAsFactors = FALSE)
 df$date <- as.Date(df$date)
@@ -180,23 +182,33 @@ log_lik <- extract_log_lik(fit, parameter_name = "log_lik", merge_chains = FALSE
 loo_result <- loo(log_lik, r_eff = relative_eff(exp(log_lik)))
 print(loo_result)
 
+# ---- Output directories -------------------------------------
+# Figures (PDFs) and Results (CSVs) are kept separate, both one level
+# up from this script's own location (Code/), regardless of caller cwd.
+script_dir <- tryCatch(dirname(rstudioapi::getSourceEditorContext()$path),
+                       error = function(e) getwd())
+figures_dir <- file.path(script_dir, "../Figures")
+results_dir <- file.path(script_dir, "../Results")
+if (!dir.exists(figures_dir)) dir.create(figures_dir, recursive = TRUE)
+if (!dir.exists(results_dir)) dir.create(results_dir, recursive = TRUE)
+
 # ---- Plots -------------------------------------------------
 color_scheme_set("gray")
 
 # Trace plots — variance equation parameters (use raw sampled params)
 p_trace <- stan_trace(fit, pars = pars_var_raw)
-ggsave("trace_variance_eq.pdf", plot = p_trace, width = 12, height = 8)
+ggsave(file.path(figures_dir, "trace_variance_eq.pdf"), plot = p_trace, width = 12, height = 8)
 cat("\nSaved: trace_variance_eq.pdf\n")
 
 # Posterior density — all parameters
 p_dens <- stan_dens(fit, pars = c(pars_mean, pars_var), separate_chains = FALSE)
-ggsave("posterior_densities.pdf", plot = p_dens, width = 10, height = 7)
+ggsave(file.path(figures_dir, "posterior_densities.pdf"), plot = p_dens, width = 10, height = 7)
 cat("Saved: posterior_densities.pdf\n")
 
 # Posterior intervals
 p_int <- stan_plot(fit, pars = c(pars_mean, pars_var),
                    point_est = "median", show_density = TRUE)
-ggsave("posterior_intervals.pdf", plot = p_int, width = 8, height = 6)
+ggsave(file.path(figures_dir, "posterior_intervals.pdf"), plot = p_int, width = 8, height = 6)
 cat("Saved: posterior_intervals.pdf\n")
 
 # ---- Extract and save conditional volatility ---------------
@@ -215,14 +227,12 @@ vol_df <- data.frame(
   vol_hi   = sqrt(h_hi)
 )
 
-out_dir  <- tryCatch(dirname(rstudioapi::getSourceEditorContext()$path),
-                     error = function(e) getwd())
-vol_path <- file.path(out_dir, "conditional_volatility.csv")
+vol_path <- file.path(results_dir, "conditional_volatility.csv")
 write.csv(vol_df, vol_path, row.names = FALSE)
 cat("Saved conditional volatility estimates:", vol_path, "\n")
 
 # ---- Volatility plot ---------------------------------------
-pdf(file.path(out_dir, "conditional_volatility_plot.pdf"), width = 10, height = 5)
+pdf(file.path(figures_dir, "conditional_volatility_plot.pdf"), width = 10, height = 5)
 plot(vol_df$date, vol_df$vol_median,
      type = "l", col = "black", lwd = 1.2,
      xlab = "Date", ylab = "Conditional std dev (sqrt h_t)",
@@ -249,7 +259,7 @@ colnames(post_summary) <- c("parameter", "mean", "sd",
                              "ci_2.5", "ci_25", "ci_50", "ci_75", "ci_97.5",
                              "n_eff", "rhat")
 
-summ_path <- file.path(out_dir, "posterior_summary.csv")
+summ_path <- file.path(results_dir, "posterior_summary.csv")
 write.csv(post_summary, summ_path, row.names = FALSE)
 cat("\nSaved posterior summary:", summ_path, "\n")
 
@@ -258,7 +268,7 @@ phi_raw_summ <- as.data.frame(summary(fit, pars = "phi_raw")$summary)
 phi_raw_summ$parameter <- "phi_raw"
 phi_raw_summ <- phi_raw_summ[, c("parameter", "mean", "sd", "2.5%", "50%", "97.5%", "n_eff", "Rhat")]
 colnames(phi_raw_summ) <- c("parameter", "mean", "sd", "ci_2.5", "ci_50", "ci_97.5", "n_eff", "rhat")
-phi_raw_path <- file.path(out_dir, "phi_raw_summary.csv")
+phi_raw_path <- file.path(results_dir, "phi_raw_summary.csv")
 write.csv(phi_raw_summ, phi_raw_path, row.names = FALSE)
 
 # 3. LOO-CV metrics
@@ -271,17 +281,18 @@ loo_csv <- data.frame(
                 loo_result$estimates["p_loo",    "SE"],
                 loo_result$estimates["looic",    "SE"])
 )
-loo_path <- file.path(out_dir, "loo_cv_metrics.csv")
+loo_path <- file.path(results_dir, "loo_cv_metrics.csv")
 write.csv(loo_csv, loo_path, row.names = FALSE)
 cat("Saved LOO-CV metrics:   ", loo_path, "\n")
 
 # 4. Individual posterior draws for the 8 model parameters
 #    (12000 rows × 8 columns; useful for secondary analysis or plots)
 draws_mat <- as.data.frame(extract(fit, pars = pars_all))
-draws_path <- file.path(out_dir, "posterior_draws.csv")
+draws_path <- file.path(results_dir, "posterior_draws.csv")
 write.csv(draws_mat, draws_path, row.names = FALSE)
 cat("Saved posterior draws:  ", draws_path, "\n")
 
-cat("\nAll CSV files saved in:", out_dir, "\n")
+cat("\nAll CSV files saved in:", results_dir, "\n")
+cat("All figure PDFs saved in:", figures_dir, "\n")
 
 cat("\nDone.\n")

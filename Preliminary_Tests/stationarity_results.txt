@@ -1,0 +1,41 @@
+UNIT ROOT TEST RESULTS
+Project: Impacts of GDP and Debt Servicing on Exchange Rate Volatility
+Sample : Post-1999 managed-float era (Feb 1999 – Dec 2020)
+Date   : 2026-06-12 
+
+------------------------------------------------------------------------------------------ 
+Series: y    (log exchange rate return) 
+------------------------------------------------------------------------------------------ 
+Test                     Statistic     CV 1%     CV 5%    CV 10%   Decision
+ADF (none)                 -7.1753   -2.5800   -1.9500   -1.6200   Reject H0 (stationary)
+ADF (drift)                -7.5028   -3.4400   -2.8700   -2.5700   Reject H0 (stationary)
+ADF (trend)                -7.5820   -3.9800   -3.4200   -3.1300   Reject H0 (stationary)
+PP (constant)              -9.9903   -3.4569   -2.8727   -2.5727   Reject H0 (stationary)
+PP (trend)                 -9.9513   -3.9965   -3.4283   -3.1373   Reject H0 (stationary)
+KPSS (mu)                   0.1644    0.3470    0.4630    0.5740   Fail to reject H0 (stationary)
+KPSS (tau)                  0.0894    0.1190    0.1460    0.1760   Fail to reject H0 (stationary)
+
+------------------------------------------------------------------------------------------ 
+Series: gdp  (Δ monthly GDP growth, 1st-differenced interp.) 
+------------------------------------------------------------------------------------------ 
+Test                     Statistic     CV 1%     CV 5%    CV 10%   Decision
+ADF (none)                 -0.3149   -2.5800   -1.9500   -1.6200   Fail to reject H0 (unit root)
+ADF (drift)                -0.4422   -3.4400   -2.8700   -2.5700   Fail to reject H0 (unit root)
+ADF (trend)                -0.9547   -3.9800   -3.4200   -3.1300   Fail to reject H0 (unit root)
+PP (constant)              -3.4046   -3.4569   -2.8727   -2.5727   Reject H0 (stationary)
+PP (trend)                 -3.5780   -3.9965   -3.4283   -3.1373   Reject H0 (stationary)
+KPSS (mu)                   0.2731    0.3470    0.4630    0.5740   Fail to reject H0 (stationary)
+KPSS (tau)                  0.0406    0.1190    0.1460    0.1760   Fail to reject H0 (stationary)
+
+------------------------------------------------------------------------------------------ 
+Series: debt (Δ monthly debt service %, 1st-differenced interp.) 
+------------------------------------------------------------------------------------------ 
+Test                     Statistic     CV 1%     CV 5%    CV 10%   Decision
+ADF (none)                 -2.1431   -2.5800   -1.9500   -1.6200   Reject H0 (stationary)
+ADF (drift)                -2.1549   -3.4400   -2.8700   -2.5700   Fail to reject H0 (unit root)
+ADF (trend)                -2.1970   -3.9800   -3.4200   -3.1300   Fail to reject H0 (unit root)
+PP (constant)              -3.6777   -3.4569   -2.8727   -2.5727   Reject H0 (stationary)
+PP (trend)                 -3.6546   -3.9965   -3.4283   -3.1373   Reject H0 (stationary)
+KPSS (mu)                   0.1113    0.3470    0.4630    0.5740   Fail to reject H0 (stationary)
+KPSS (tau)                  0.0386    0.1190    0.1460    0.1760   Fail to reject H0 (stationary)
+
