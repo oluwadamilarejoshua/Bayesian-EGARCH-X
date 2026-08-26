@@ -154,6 +154,66 @@ cat("Exchange rate data range:", format(min(exr_monthly$date)),
     "to", format(max(exr_monthly$date)), "\n")
 
 # ============================================================
+# STEP 1b: Monthly indicator for GDP disaggregation — WTI oil price
+# Nigeria's GDP and export earnings are heavily oil-driven, so the
+# monthly WTI spot price is used as the within-year movement proxy
+# for the Denton-Cholette disaggregation of annual GDP growth.
+# Source: FRED series WTISPLC (Spot Crude Oil Price: WTI, dollars
+# per barrel), monthly, Jan 1946-present, no gaps.
+# Citation: Federal Reserve Bank of St. Louis (2024). FRED.
+#           https://fred.stlouisfed.org/series/WTISPLC
+# ============================================================
+cat("\nFetching GDP indicator: WTI oil price (FRED WTISPLC)...\n")
+library(quantmod)
+getSymbols("WTISPLC", src = "FRED", auto.assign = TRUE)
+oil_raw <- data.frame(
+  date = as.Date(index(WTISPLC)),
+  oil  = as.numeric(WTISPLC)
+) %>%
+  filter(date >= as.Date("1980-01-01"), date <= as.Date("2020-12-01"),
+         !is.na(oil)) %>%
+  arrange(date)
+cat("Oil price indicator:", nrow(oil_raw), "monthly observations,",
+    format(min(oil_raw$date)), "to", format(max(oil_raw$date)), "\n")
+
+# ============================================================
+# STEP 1c: Monthly indicator for debt-service disaggregation —
+# US 10-Year Treasury Constant Maturity Rate
+#
+# REVISION NOTE: an earlier version of this script used Nigeria's
+# own FX reserves (IMF IFS M.NG.RAXG_USD) as the debt indicator.
+# That was dropped: reserves are the exact instrument the CBN uses
+# to defend the naira band, so a reserves-shaped debt regressor
+# shares a common driver with the dependent variable (exchange-rate
+# returns) — a real circularity risk that could spuriously inflate
+# betaDebt. The US 10-year Treasury yield has no such problem: it
+# is set entirely by US monetary policy and global bond markets,
+# with zero mechanical link to CBN operations or the naira market.
+# It is still economically motivated, not an arbitrary substitute:
+# most of Nigeria's external debt is dollar-denominated, and the
+# prevailing global rate directly drives the cost of servicing and
+# refinancing that debt — a higher US rate raises Nigeria's debt-
+# service burden independent of anything happening in Nigeria.
+# Source: FRED series GS10 (Market Yield on U.S. Treasury Securities
+# at 10-Year Constant Maturity), monthly, percent, Apr 1953-present,
+# no gaps in the 1980-2020 window.
+# Citation: Federal Reserve Bank of St. Louis (2024). FRED.
+#           https://fred.stlouisfed.org/series/GS10
+# ============================================================
+cat("\nFetching debt-service indicator: US 10Y Treasury yield (FRED GS10)...\n")
+library(quantmod)
+getSymbols("GS10", src = "FRED", auto.assign = TRUE)
+gs10_raw <- data.frame(
+  date  = as.Date(index(GS10)),
+  gs10  = as.numeric(GS10)
+) %>%
+  filter(date >= as.Date("1980-01-01"), date <= as.Date("2020-12-01"),
+         !is.na(gs10)) %>%
+  arrange(date)
+cat("US 10Y Treasury yield indicator:", nrow(gs10_raw), "monthly observations,",
+    format(min(gs10_raw$date)), "to", format(max(gs10_raw$date)), "\n")
+
+# ============================================================
 # STEP 2 & 3: Annual GDP growth and debt service
 # Primary source: local CSV (already downloaded — no API call needed)
 # Fallback: WDI API (used only if the local file is missing)
@@ -240,31 +300,57 @@ if (file.exists(annual_csv)) {
 }
 
 # ============================================================
-# STEP 4: Interpolate annual series to monthly (Denton-Cholette)
+# STEP 4: Interpolate annual series to monthly (Denton-Cholette),
+# WITH monthly indicators (oil price for GDP; US 10Y Treasury yield
+# for debt service).
+# Previously this used formula `~ 1` (no indicator), which forces
+# the disaggregation to fall back on pure curvature-minimisation —
+# the smoothest mathematically possible path consistent with the
+# annual totals, with no real monthly economic signal shaping the
+# within-year distribution. Supplying a genuine related indicator
+# lets Denton-Cholette preserve the indicator's actual month-to-
+# month movement instead, which is the method's intended use case.
+# NOTE: Denton methods require `0 +` in the formula to suppress the
+# intercept — without it, the model matrix gets 2 columns (intercept
+# + indicator) and td() errors with "only one series allowed".
 # ============================================================
-cat("\nInterpolating annual macro series to monthly...\n")
+cat("\nInterpolating annual macro series to monthly (indicator-based)...\n")
 
 months_all <- seq.Date(as.Date("1980-01-01"), as.Date("2020-12-01"), by = "month")
 
-# GDP
+# Align indicators to the full monthly grid and fail loudly on any gap
+oil_aligned <- data.frame(date = months_all) %>%
+  left_join(oil_raw, by = "date")
+gs10_aligned <- data.frame(date = months_all) %>%
+  left_join(gs10_raw, by = "date")
+
+if (any(is.na(oil_aligned$oil)))
+  stop("Oil indicator has missing months in the 1980-2020 window — check the fetch.")
+if (any(is.na(gs10_aligned$gs10)))
+  stop("GS10 indicator has missing months in the 1980-2020 window — check the fetch.")
+
+oil_monthly_ts  <- ts(oil_aligned$oil,   start = c(1980, 1), frequency = 12)
+gs10_monthly_ts <- ts(gs10_aligned$gs10, start = c(1980, 1), frequency = 12)
+
+# GDP — indicator: WTI oil price
 gdp_annual_ts <- ts(
   gdp_raw %>% filter(year >= 1980, year <= 2020) %>% pull(gdp_growth),
   start = 1980, frequency = 1
 )
-gdp_monthly_ts <- predict(
-  td(gdp_annual_ts ~ 1, to = 12, method = "denton-cholette"),
-  newdata = gdp_annual_ts
-)
+gdp_td <- td(gdp_annual_ts ~ 0 + oil_monthly_ts, to = 12, method = "denton-cholette")
+gdp_monthly_ts <- predict(gdp_td)
+cat("\nGDP disaggregation (indicator = WTI oil price):\n")
+print(summary(gdp_td))
 
-# Debt service
+# Debt service — indicator: US 10Y Treasury yield (exogenous to Nigeria's FX market)
 debt_annual_ts <- ts(
   debt_raw %>% filter(year >= 1980, year <= 2020) %>% pull(debt_service_pct_exports),
   start = 1980, frequency = 1
 )
-debt_monthly_ts <- predict(
-  td(debt_annual_ts ~ 1, to = 12, method = "denton-cholette"),
-  newdata = debt_annual_ts
-)
+debt_td <- td(debt_annual_ts ~ 0 + gs10_monthly_ts, to = 12, method = "denton-cholette")
+debt_monthly_ts <- predict(debt_td)
+cat("\nDebt-service disaggregation (indicator = US 10Y Treasury yield):\n")
+print(summary(debt_td))
 
 macro_monthly <- data.frame(
   date                        = months_all,
@@ -272,7 +358,7 @@ macro_monthly <- data.frame(
   debt_service_monthly_interp = as.numeric(debt_monthly_ts)
 )
 
-cat("Interpolated monthly macro observations:", nrow(macro_monthly), "\n")
+cat("\nInterpolated monthly macro observations:", nrow(macro_monthly), "\n")
 
 # ============================================================
 # STEP 5: Merge all series
@@ -310,12 +396,17 @@ cat("Final modelling dataset:", nrow(df_monthly), "observations\n")
 out_dir <- tryCatch({
   file.path(dirname(rstudioapi::getSourceEditorContext()$path), "../Data/processed")
 }, error = function(e) {
-  args <- commandArgs(trailingOnly = FALSE)
-  flag <- grep("--file=", args, value = TRUE)
-  if (length(flag) > 0)
-    file.path(dirname(normalizePath(sub("--file=", "", flag[1]))), "../Data/processed")
-  else
-    file.path(getwd(), "../Data/processed")
+  src_path <- tryCatch(normalizePath(sys.frame(1)$ofile), error = function(e2) NULL)
+  if (!is.null(src_path)) {
+    file.path(dirname(src_path), "../Data/processed")
+  } else {
+    args <- commandArgs(trailingOnly = FALSE)
+    flag <- grep("--file=", args, value = TRUE)
+    if (length(flag) > 0)
+      file.path(dirname(normalizePath(sub("--file=", "", flag[1]))), "../Data/processed")
+    else
+      file.path(getwd(), "../Data/processed")
+  }
 })
 if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
 
