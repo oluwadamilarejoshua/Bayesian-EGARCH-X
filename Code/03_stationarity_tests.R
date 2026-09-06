@@ -212,7 +212,16 @@ for (nm in names(series_list)) {
 out_path <- tryCatch({
   script_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
   file.path(script_dir, "../Preliminary_Tests/stationarity_results.txt")
-}, error = function(e) file.path(getwd(), "../Preliminary_Tests/stationarity_results.txt"))
+}, error = function(e) {
+  args      <- commandArgs(trailingOnly = FALSE)
+  file_flag <- grep("--file=", args, value = TRUE)
+  if (length(file_flag) > 0) {
+    file.path(dirname(normalizePath(sub("--file=", "", file_flag[1]))),
+              "../Preliminary_Tests/stationarity_results.txt")
+  } else {
+    file.path(getwd(), "../Preliminary_Tests/stationarity_results.txt")
+  }
+})
 if (!dir.exists(dirname(out_path))) dir.create(dirname(out_path), recursive = TRUE)
 
 sink(out_path)

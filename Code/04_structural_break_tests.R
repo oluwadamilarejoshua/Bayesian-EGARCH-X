@@ -180,7 +180,16 @@ if (length(break_2016_idx) > 0) {
 out_plot <- tryCatch({
   script_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
   file.path(script_dir, "../Preliminary_Tests/structural_break_plot.pdf")
-}, error = function(e) file.path(getwd(), "../Preliminary_Tests/structural_break_plot.pdf"))
+}, error = function(e) {
+  args      <- commandArgs(trailingOnly = FALSE)
+  file_flag <- grep("--file=", args, value = TRUE)
+  if (length(file_flag) > 0) {
+    file.path(dirname(normalizePath(sub("--file=", "", file_flag[1]))),
+              "../Preliminary_Tests/structural_break_plot.pdf")
+  } else {
+    file.path(getwd(), "../Preliminary_Tests/structural_break_plot.pdf")
+  }
+})
 if (!dir.exists(dirname(out_plot))) dir.create(dirname(out_plot), recursive = TRUE)
 
 tryCatch({
@@ -227,7 +236,16 @@ tryCatch({
 out_txt <- tryCatch({
   script_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
   file.path(script_dir, "../Preliminary_Tests/structural_break_results.txt")
-}, error = function(e) file.path(getwd(), "../Preliminary_Tests/structural_break_results.txt"))
+}, error = function(e) {
+  args      <- commandArgs(trailingOnly = FALSE)
+  file_flag <- grep("--file=", args, value = TRUE)
+  if (length(file_flag) > 0) {
+    file.path(dirname(normalizePath(sub("--file=", "", file_flag[1]))),
+              "../Preliminary_Tests/structural_break_results.txt")
+  } else {
+    file.path(getwd(), "../Preliminary_Tests/structural_break_results.txt")
+  }
+})
 if (!dir.exists(dirname(out_txt))) dir.create(dirname(out_txt), recursive = TRUE)
 
 sink(out_txt)
