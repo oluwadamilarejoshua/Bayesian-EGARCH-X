@@ -1,0 +1,165 @@
+Warning messages:
+1: package 'rstan' was built under R version 4.5.3 
+2: package 'StanHeaders' was built under R version 4.5.3 
+Fitting baseline (tight prior) with DISPERSED inits (reduced iter)...
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 0.000654 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.54 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 3000 [  0%]  (Warmup)
+Chain 1: Iteration:  300 / 3000 [ 10%]  (Warmup)
+Chain 1: Iteration:  600 / 3000 [ 20%]  (Warmup)
+Chain 1: Iteration:  900 / 3000 [ 30%]  (Warmup)
+Chain 1: Iteration: 1001 / 3000 [ 33%]  (Sampling)
+Chain 1: Iteration: 1300 / 3000 [ 43%]  (Sampling)
+Chain 1: Iteration: 1600 / 3000 [ 53%]  (Sampling)
+Chain 1: Iteration: 1900 / 3000 [ 63%]  (Sampling)
+Chain 1: Iteration: 2200 / 3000 [ 73%]  (Sampling)
+Chain 1: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+Chain 1: Iteration: 2800 / 3000 [ 93%]  (Sampling)
+Chain 1: Iteration: 3000 / 3000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 479.018 seconds (Warm-up)
+Chain 1:                117.967 seconds (Sampling)
+Chain 1:                596.985 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 0.000374 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.74 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 3000 [  0%]  (Warmup)
+Chain 2: Iteration:  300 / 3000 [ 10%]  (Warmup)
+Chain 2: Iteration:  600 / 3000 [ 20%]  (Warmup)
+Chain 2: Iteration:  900 / 3000 [ 30%]  (Warmup)
+Chain 2: Iteration: 1001 / 3000 [ 33%]  (Sampling)
+Chain 2: Iteration: 1300 / 3000 [ 43%]  (Sampling)
+Chain 2: Iteration: 1600 / 3000 [ 53%]  (Sampling)
+Chain 2: Iteration: 1900 / 3000 [ 63%]  (Sampling)
+Chain 2: Iteration: 2200 / 3000 [ 73%]  (Sampling)
+Chain 2: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+Chain 2: Iteration: 2800 / 3000 [ 93%]  (Sampling)
+Chain 2: Iteration: 3000 / 3000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 715.115 seconds (Warm-up)
+Chain 2:                154.783 seconds (Sampling)
+Chain 2:                869.898 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 0.000231 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.31 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 3000 [  0%]  (Warmup)
+Chain 3: Iteration:  300 / 3000 [ 10%]  (Warmup)
+Chain 3: Iteration:  600 / 3000 [ 20%]  (Warmup)
+Chain 3: Iteration:  900 / 3000 [ 30%]  (Warmup)
+Chain 3: Iteration: 1001 / 3000 [ 33%]  (Sampling)
+Chain 3: Iteration: 1300 / 3000 [ 43%]  (Sampling)
+Chain 3: Iteration: 1600 / 3000 [ 53%]  (Sampling)
+Chain 3: Iteration: 1900 / 3000 [ 63%]  (Sampling)
+Chain 3: Iteration: 2200 / 3000 [ 73%]  (Sampling)
+Chain 3: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+Chain 3: Iteration: 2800 / 3000 [ 93%]  (Sampling)
+Chain 3: Iteration: 3000 / 3000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 435.232 seconds (Warm-up)
+Chain 3:                158.186 seconds (Sampling)
+Chain 3:                593.418 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 0.000412 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.12 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 3000 [  0%]  (Warmup)
+Chain 4: Iteration:  300 / 3000 [ 10%]  (Warmup)
+Chain 4: Iteration:  600 / 3000 [ 20%]  (Warmup)
+Chain 4: Iteration:  900 / 3000 [ 30%]  (Warmup)
+Chain 4: Iteration: 1001 / 3000 [ 33%]  (Sampling)
+Chain 4: Iteration: 1300 / 3000 [ 43%]  (Sampling)
+Chain 4: Iteration: 1600 / 3000 [ 53%]  (Sampling)
+Chain 4: Iteration: 1900 / 3000 [ 63%]  (Sampling)
+Chain 4: Iteration: 2200 / 3000 [ 73%]  (Sampling)
+Chain 4: Iteration: 2500 / 3000 [ 83%]  (Sampling)
+Chain 4: Iteration: 2800 / 3000 [ 93%]  (Sampling)
+Chain 4: Iteration: 3000 / 3000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 439.278 seconds (Warm-up)
+Chain 4:                56.248 seconds (Sampling)
+Chain 4:                495.526 seconds (Total)
+Chain 4: 
+Warning messages:
+1: There were 4 divergent transitions after warmup. See
+https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
+to find out why this is a problem and how to eliminate them. 
+2: There were 1 chains where the estimated Bayesian Fraction of Missing Information was low. See
+https://mc-stan.org/misc/warnings.html#bfmi-low 
+3: Examine the pairs() plot to diagnose sampling problems
+ 
+4: The largest R-hat is NA, indicating chains have not mixed.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#r-hat 
+5: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#bulk-ess 
+6: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#tail-ess 
+Fit time: 44.05 min
+Saved: C:/Users/JOSHUA~1.OGU/AppData/Local/Temp/claude/c--Users-joshua-ogundairo-Downloads-My-Research-Works-Impacts-of-GDP-and-Debt-Servicing-on-Exchange-Rate-Volatility-of-the-Nigerian-Naira--A-Bayesian-EGARCH-Approach/89ca73a5-75a5-4283-8ef8-9cb30222e7e7/scratchpad/sensitivity/baseline_dispersed_perchain.csv 
+
+=== PER-CHAIN MEANS (this is the whole point of this run) ===
+ parameter chain       mean          sd        q2.5      q97.5
+     omega     1 -0.5173858 0.096232830 -0.71166810 -0.3332157
+     omega     2 -0.5173159 0.093928719 -0.70915322 -0.3406860
+     omega     3 -0.5099528 0.092884970 -0.69133823 -0.3344351
+     omega     4 -2.9571888 1.185832531 -4.06648747 -0.4121169
+     alpha     1  0.7419226 0.065876663  0.61688891  0.8845259
+     alpha     2  0.7423117 0.067751651  0.61237215  0.8897536
+     alpha     3  0.7470612 0.068982461  0.61607419  0.8916982
+     alpha     4  0.3828944 0.214744709  0.05830710  0.8088357
+     gamma     1  0.1906666 0.055083846  0.07853997  0.2955130
+     gamma     2  0.1893755 0.054395651  0.07941983  0.2957524
+     gamma     3  0.1881098 0.053737787  0.07836652  0.2905257
+     gamma     4  0.4141379 0.152176053  0.11937103  0.6624830
+       phi     1  0.9134184 0.009642690  0.89421184  0.9311353
+       phi     2  0.9134379 0.009355444  0.89452328  0.9310962
+       phi     3  0.9138253 0.009434756  0.89547143  0.9317357
+       phi     4  0.6401081 0.132863675  0.51578653  0.9246978
+   betaGDP     1 -0.5926868 0.038925411 -0.66874588 -0.5198567
+   betaGDP     2 -0.5924034 0.038201965 -0.66608568 -0.5171924
+   betaGDP     3 -0.5928334 0.039010349 -0.66786383 -0.5128112
+   betaGDP     4 -0.6526180 0.073157390 -0.78899384 -0.5159965
+  betaDebt     1  0.1102621 0.044076436  0.02479455  0.2003750
+  betaDebt     2  0.1092807 0.044112339  0.02351295  0.1973572
+  betaDebt     3  0.1098369 0.044723200  0.02588905  0.2000060
+  betaDebt     4 -0.6724217 0.390321165 -1.11510597  0.1556427
+
+=== Pooled Rhat ===
+   omega    alpha    gamma      phi  betaGDP betaDebt 
+   2.411    1.818    1.611    2.411    1.153    2.306 
+
+=== Pooled summary ===
+            mean    2.5%   97.5%  n_eff   Rhat
+omega    -1.1255 -3.8347 -0.3448 2.6521 2.4114
+alpha     0.6535  0.1393  0.8802 3.2113 1.8180
+gamma     0.2456  0.0849  0.5940 3.5920 1.6108
+phi       0.8452  0.5419  0.9305 2.6496 2.4114
+betaGDP  -0.6076 -0.7473 -0.5165 8.7916 1.1531
+betaDebt -0.0858 -1.0048  0.1938 2.6830 2.3063
+
+Done: baseline_dispersed

@@ -178,39 +178,64 @@ cat("Oil price indicator:", nrow(oil_raw), "monthly observations,",
 
 # ============================================================
 # STEP 1c: Monthly indicator for debt-service disaggregation —
-# US 10-Year Treasury Constant Maturity Rate
+# US 10-Year Treasury Constant Maturity Rate, SMOOTHED (centred
+# 3-month moving average)
 #
-# REVISION NOTE: an earlier version of this script used Nigeria's
-# own FX reserves (IMF IFS M.NG.RAXG_USD) as the debt indicator.
-# That was dropped: reserves are the exact instrument the CBN uses
-# to defend the naira band, so a reserves-shaped debt regressor
-# shares a common driver with the dependent variable (exchange-rate
-# returns) — a real circularity risk that could spuriously inflate
-# betaDebt. The US 10-year Treasury yield has no such problem: it
-# is set entirely by US monetary policy and global bond markets,
-# with zero mechanical link to CBN operations or the naira market.
-# It is still economically motivated, not an arbitrary substitute:
-# most of Nigeria's external debt is dollar-denominated, and the
-# prevailing global rate directly drives the cost of servicing and
-# refinancing that debt — a higher US rate raises Nigeria's debt-
-# service burden independent of anything happening in Nigeria.
+# REVISION HISTORY:
+#   v1: Nigeria's own FX reserves (IMF IFS M.NG.RAXG_USD). Dropped —
+#       reserves are the exact instrument the CBN uses to defend the
+#       naira band, so a reserves-shaped debt regressor shares a
+#       common driver with the dependent variable (circularity risk).
+#   v2: Raw US 10-year Treasury yield (GS10). Exogenous to Nigeria's
+#       FX market and economically motivated (most of Nigeria's
+#       external debt is dollar-denominated, so global rates drive
+#       servicing cost) -- but a robustness investigation (see
+#       Code/robustness_checks/) found GS10 dipped sharply in
+#       June-July 2016 for reasons entirely about US/global rates
+#       (Brexit-adjacent), coincidentally the same two months as the
+#       naira's largest shock in the sample. This created a
+#       high-leverage alignment: excluding those two months from the
+#       likelihood flipped betaDebt's sign entirely.
+#   v3 [CURRENT]: smoothed GS10 (centred 3-month moving average).
+#       Dilutes the sharp single-month 2016 coincidence while
+#       retaining the genuine "global rates matter" signal. Refitting
+#       on this smoothed series did not weaken the debt-service
+#       finding -- it survived with a *tighter*, more credible
+#       interval and better out-of-sample fit (LOO-CV), which is
+#       evidence the original finding was not an artifact of that one
+#       coincidence. See Code/robustness_checks/ for the full
+#       investigation and Code/robustness_checks/05_smoothed_gs10/
+#       for this specification's results.
 # Source: FRED series GS10 (Market Yield on U.S. Treasury Securities
 # at 10-Year Constant Maturity), monthly, percent, Apr 1953-present,
 # no gaps in the 1980-2020 window.
 # Citation: Federal Reserve Bank of St. Louis (2024). FRED.
 #           https://fred.stlouisfed.org/series/GS10
 # ============================================================
-cat("\nFetching debt-service indicator: US 10Y Treasury yield (FRED GS10)...\n")
+cat("\nFetching debt-service indicator: US 10Y Treasury yield (FRED GS10), smoothed...\n")
 library(quantmod)
+library(zoo)
 getSymbols("GS10", src = "FRED", auto.assign = TRUE)
-gs10_raw <- data.frame(
-  date  = as.Date(index(GS10)),
-  gs10  = as.numeric(GS10)
+# Fetch a slightly wider window so the centred moving average has
+# neighbours available right at the 1980/2020 sample edges.
+gs10_wide <- data.frame(
+  date = as.Date(index(GS10)),
+  gs10 = as.numeric(GS10)
 ) %>%
-  filter(date >= as.Date("1980-01-01"), date <= as.Date("2020-12-01"),
+  filter(date >= as.Date("1979-11-01"), date <= as.Date("2021-02-01"),
          !is.na(gs10)) %>%
   arrange(date)
-cat("US 10Y Treasury yield indicator:", nrow(gs10_raw), "monthly observations,",
+gs10_wide$gs10_smooth <- rollapply(gs10_wide$gs10, width = 3, FUN = mean,
+                                    fill = NA, align = "center")
+# Fall back to the raw value at the very edges where the 3-month
+# window has no neighbour on one side.
+gs10_wide$gs10_smooth[is.na(gs10_wide$gs10_smooth)] <-
+  gs10_wide$gs10[is.na(gs10_wide$gs10_smooth)]
+
+gs10_raw <- gs10_wide %>%
+  filter(date >= as.Date("1980-01-01"), date <= as.Date("2020-12-01")) %>%
+  select(date, gs10 = gs10_smooth)
+cat("US 10Y Treasury yield indicator (smoothed):", nrow(gs10_raw), "monthly observations,",
     format(min(gs10_raw$date)), "to", format(max(gs10_raw$date)), "\n")
 
 # ============================================================
