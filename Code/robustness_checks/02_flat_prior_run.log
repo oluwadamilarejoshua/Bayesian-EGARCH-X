@@ -1,0 +1,128 @@
+Warning messages:
+1: package 'rstan' was built under R version 4.5.3 
+2: package 'StanHeaders' was built under R version 4.5.3 
+[ flat ] Loaded: 262 obs, 1999-03-01 to 2020-12-01 
+[ flat ] Fitting: C:/Users/JOSHUA~1.OGU/AppData/Local/Temp/claude/c--Users-joshua-ogundairo-Downloads-My-Research-Works-Impacts-of-GDP-and-Debt-Servicing-on-Exchange-Rate-Volatility-of-the-Nigerian-Naira--A-Bayesian-EGARCH-Approach/89ca73a5-75a5-4283-8ef8-9cb30222e7e7/scratchpad/sensitivity/egarch_x_flat.stan 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 0.000238 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.38 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 4000 [  0%]  (Warmup)
+Chain 1: Iteration:  400 / 4000 [ 10%]  (Warmup)
+Chain 1: Iteration:  800 / 4000 [ 20%]  (Warmup)
+Chain 1: Iteration: 1001 / 4000 [ 25%]  (Sampling)
+Chain 1: Iteration: 1400 / 4000 [ 35%]  (Sampling)
+Chain 1: Iteration: 1800 / 4000 [ 45%]  (Sampling)
+Chain 1: Iteration: 2200 / 4000 [ 55%]  (Sampling)
+Chain 1: Iteration: 2600 / 4000 [ 65%]  (Sampling)
+Chain 1: Iteration: 3000 / 4000 [ 75%]  (Sampling)
+Chain 1: Iteration: 3400 / 4000 [ 85%]  (Sampling)
+Chain 1: Iteration: 3800 / 4000 [ 95%]  (Sampling)
+Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 338.651 seconds (Warm-up)
+Chain 1:                112.884 seconds (Sampling)
+Chain 1:                451.535 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 0.000342 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.42 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 4000 [  0%]  (Warmup)
+Chain 2: Iteration:  400 / 4000 [ 10%]  (Warmup)
+Chain 2: Iteration:  800 / 4000 [ 20%]  (Warmup)
+Chain 2: Iteration: 1001 / 4000 [ 25%]  (Sampling)
+Chain 2: Iteration: 1400 / 4000 [ 35%]  (Sampling)
+Chain 2: Iteration: 1800 / 4000 [ 45%]  (Sampling)
+Chain 2: Iteration: 2200 / 4000 [ 55%]  (Sampling)
+Chain 2: Iteration: 2600 / 4000 [ 65%]  (Sampling)
+Chain 2: Iteration: 3000 / 4000 [ 75%]  (Sampling)
+Chain 2: Iteration: 3400 / 4000 [ 85%]  (Sampling)
+Chain 2: Iteration: 3800 / 4000 [ 95%]  (Sampling)
+Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 248.237 seconds (Warm-up)
+Chain 2:                62.857 seconds (Sampling)
+Chain 2:                311.094 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 0.00036 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.6 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 4000 [  0%]  (Warmup)
+Chain 3: Iteration:  400 / 4000 [ 10%]  (Warmup)
+Chain 3: Iteration:  800 / 4000 [ 20%]  (Warmup)
+Chain 3: Iteration: 1001 / 4000 [ 25%]  (Sampling)
+Chain 3: Iteration: 1400 / 4000 [ 35%]  (Sampling)
+Chain 3: Iteration: 1800 / 4000 [ 45%]  (Sampling)
+Chain 3: Iteration: 2200 / 4000 [ 55%]  (Sampling)
+Chain 3: Iteration: 2600 / 4000 [ 65%]  (Sampling)
+Chain 3: Iteration: 3000 / 4000 [ 75%]  (Sampling)
+Chain 3: Iteration: 3400 / 4000 [ 85%]  (Sampling)
+Chain 3: Iteration: 3800 / 4000 [ 95%]  (Sampling)
+Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 469.896 seconds (Warm-up)
+Chain 3:                123.884 seconds (Sampling)
+Chain 3:                593.78 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 0.000162 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.62 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 4000 [  0%]  (Warmup)
+Chain 4: Iteration:  400 / 4000 [ 10%]  (Warmup)
+Chain 4: Iteration:  800 / 4000 [ 20%]  (Warmup)
+Chain 4: Iteration: 1001 / 4000 [ 25%]  (Sampling)
+Chain 4: Iteration: 1400 / 4000 [ 35%]  (Sampling)
+Chain 4: Iteration: 1800 / 4000 [ 45%]  (Sampling)
+Chain 4: Iteration: 2200 / 4000 [ 55%]  (Sampling)
+Chain 4: Iteration: 2600 / 4000 [ 65%]  (Sampling)
+Chain 4: Iteration: 3000 / 4000 [ 75%]  (Sampling)
+Chain 4: Iteration: 3400 / 4000 [ 85%]  (Sampling)
+Chain 4: Iteration: 3800 / 4000 [ 95%]  (Sampling)
+Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 247.617 seconds (Warm-up)
+Chain 4:                42.796 seconds (Sampling)
+Chain 4:                290.413 seconds (Total)
+Chain 4: 
+Warning messages:
+1: The largest R-hat is NA, indicating chains have not mixed.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#r-hat 
+2: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#bulk-ess 
+3: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#tail-ess 
+[ flat ] Fit time: 28.43 min
+[ flat ] R-hat > 1.01 count: 980 
+[ flat ] Saved: C:/Users/JOSHUA~1.OGU/AppData/Local/Temp/claude/c--Users-joshua-ogundairo-Downloads-My-Research-Works-Impacts-of-GDP-and-Debt-Servicing-on-Exchange-Rate-Volatility-of-the-Nigerian-Naira--A-Bayesian-EGARCH-Approach/89ca73a5-75a5-4283-8ef8-9cb30222e7e7/scratchpad/sensitivity/flat_summary.csv 
+
+[ flat ] === betaGDP / betaDebt summary ===
+ variant parameter       mean        sd     ci_2.5      ci_50    ci_97.5
+    flat   betaGDP -0.6291374 0.0682066 -0.7781489 -0.6190358 -0.5164388
+    flat  betaDebt -0.4578112 0.5712468 -1.2516104 -0.2290033  0.1750387
+    n_eff     rhat
+ 6.821675 1.185557
+ 2.056486 5.755352
+
+Done: flat 

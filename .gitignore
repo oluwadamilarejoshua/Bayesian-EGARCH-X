@@ -1,0 +1,12 @@
+# This repo ships execution scripts only. Running the Code/ pipeline
+# locally regenerates these folders (raw/processed data, test outputs,
+# figures, posterior results) — they are intentionally not tracked.
+/Data/
+/Preliminary_Tests/
+/Figures/
+/Results/
+
+# R session artifacts
+.Rhistory
+.RData
+.Rproj.user/
